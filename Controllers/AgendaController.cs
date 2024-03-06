@@ -21,7 +21,7 @@ public class AgendaController : ControllerBase
     
     [HttpPost("AddTask")]
     [Authorize(Roles = "User")]
-    public async Task<IActionResult> AddTask(string description, string date, TimeOnly start, TimeOnly end)
+    public async Task<IActionResult> AddTask(string description, DateOnly date, TimeOnly start, TimeOnly end)
     {
         var jwt = Request.Cookies["jwt"];
         
@@ -37,7 +37,7 @@ public class AgendaController : ControllerBase
             var task = new AgendaTask
             {
                 TaskDescription = description,
-                TaskDate = date,
+                TaskDate = date.ToString("dd/MM/yyyy"),
                 TaskStart = start,
                 TaskEnd = end,
                 Matricule = matricule
@@ -49,7 +49,7 @@ public class AgendaController : ControllerBase
     
     [HttpPost("AddCourse")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> AddCourse(string matiere,string description, string date, TimeOnly start, TimeOnly end, string prof, string parcours,string niveau, string salle, string groupe)
+    public async Task<IActionResult> AddCourse(string matiere,string description, DateOnly date, TimeOnly start, TimeOnly end, string prof, string parcours,string niveau, string salle, string groupe)
     {
         var jwt = Request.Cookies["jwt"];
         
@@ -65,7 +65,7 @@ public class AgendaController : ControllerBase
         {
             Matiere = matiere,
             TaskDescription = description,
-            TaskDate = date,
+            TaskDate = date.ToString("dd/MM/yyyy"),
             TaskStart = start,
             TaskEnd = end,
             Prof = prof,
