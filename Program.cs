@@ -1,6 +1,8 @@
 using System.Security.Claims;
 using System.Text;
 using Devhunt_2024_back.Data;
+using Devhunt_2024_back.Repositories.UserRepository;
+using Devhunt_2024_back.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -14,6 +16,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<JwtService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 //DBContext
 builder.Services.AddDbContext<AppDbContext>(options =>
