@@ -62,9 +62,11 @@ public class AgendaRepository : IAgendaRepository
             throw new ArgumentException("Invalid end date format. Expected format is dd/MM/yyyy.");
         }
         
-        return await _appDbContext.Courses
+        var allCourse = await _appDbContext.Courses.ToListAsync();
+
+        return allCourse
             .Where(c => DateTime.ParseExact(c.TaskDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) >= startDate 
                         && DateTime.ParseExact(c.TaskDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= endDate)
-            .ToListAsync();
+            .ToList();
     }
 }

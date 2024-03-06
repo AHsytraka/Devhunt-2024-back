@@ -91,7 +91,7 @@ public class AgendaController : ControllerBase
     }
     
     [HttpGet("GetCourses")]
-    [Authorize(Roles = "User, Admin")]
+    [Authorize(Roles = "User,Admin")]
     public async Task<IActionResult> GetCourses(string prem, string dern)
     {
         var courseList = await _agendaRepository.GetCourses(prem, dern);
