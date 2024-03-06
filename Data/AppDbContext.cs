@@ -21,4 +21,9 @@ public class AppDbContext:DbContext
     public DbSet<UserInterestCategory> UserInterestCategories { get; set; }
     
     public DbSet<Subject> Subjects { get; set; }
+    
+    public DbSet<Course> Courses { get; set; }
+    public DbSet<AgendaTask> AgendaTasks { get; set; }
+    
+    public DbSet<Admin> Admins { get; set; }
 }

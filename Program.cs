@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using System.Text;
 using Devhunt_2024_back.Data;
+using Devhunt_2024_back.Repositories.AgendaRepository;
 using Devhunt_2024_back.Repositories.FileRepository;
 using Devhunt_2024_back.Repositories.InterestRepository;
 using Devhunt_2024_back.Repositories.ProfRepository;
@@ -26,6 +27,7 @@ builder.Services.AddScoped<IInterestRepository, InterestRepository>();
 builder.Services.AddTransient<IPostRepository, PostRepository>();
 builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
 builder.Services.AddScoped<IProfRepository, ProfRepository>();
+builder.Services.AddScoped<IAgendaRepository, AgendaRepository>();
 
 //DBContext
 builder.Services.AddDbContext<AppDbContext>(options =>

@@ -1,7 +1,6 @@
 using Devhunt_2024_back.Data;
 using Devhunt_2024_back.Models;
 using Microsoft.EntityFrameworkCore;
-
 namespace Devhunt_2024_back.Repositories.InterestRepository;
 
 public class InterestRepository:IInterestRepository

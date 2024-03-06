@@ -1,5 +1,6 @@
 using Devhunt_2024_back.Models;
 using Devhunt_2024_back.Repositories.ProfRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Devhunt_2024_back.Controllers;
@@ -15,6 +16,7 @@ public class ProfController : ControllerBase
         _profRepository = profRepository;
     }
     [HttpPost("AddProfessor")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> AddProfessor(string matricule, string nom, string prenom, string titre)
     {
         var Professor = new Professor
@@ -30,6 +32,7 @@ public class ProfController : ControllerBase
     }
 
     [HttpGet("GetProfessors")]
+    [Authorize(Roles = "User,Admin")]
     public async Task<IActionResult> GetProfessors()
     {
         var profList = await _profRepository.GetProfessors();

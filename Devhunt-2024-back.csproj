@@ -30,4 +30,16 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\interests\image\vscode-icons_file-type-reactjs_051a.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\interests\image\vscode-icons_file-type-reactjs_3d4d.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\interests\image\vscode-icons_file-type-reactjs_50a0.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\interests\image\vscode-icons_file-type-reactjs_5ec8.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\interests\image\vscode-icons_file-type-reactjs_6c3b.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\interests\image\vscode-icons_file-type-reactjs_9122.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\interests\image\vscode-icons_file-type-reactjs_92cb.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\interests\image\vscode-icons_file-type-reactjs_b273.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\interests\image\vscode-icons_file-type-reactjs_b5fb.png" />
+  </ItemGroup>
+
 </Project>

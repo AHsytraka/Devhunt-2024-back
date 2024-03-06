@@ -1,5 +1,6 @@
 using Devhunt_2024_back.Models;
 using Devhunt_2024_back.Repositories.SubjectRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Devhunt_2024_back.Controllers;
@@ -15,6 +16,7 @@ public class SubjectController : ControllerBase
     }
     
     [HttpPost("AddSubject")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> AddSubject(string libelle, string description, string professors)
     {
         var subject = new Subject
@@ -30,6 +32,7 @@ public class SubjectController : ControllerBase
     }
 
     [HttpGet("GetSubjects")]
+    [Authorize(Roles = "User,Admin")]
     public async Task<IActionResult> GetSubjects()
     {
         var subjectList = await _subjectRepository.GetSubjects();

@@ -109,20 +109,51 @@ namespace Devhunt_2024_back.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserInterestCategories",
+                name: "AgendaTasks",
                 columns: table => new
                 {
-                    CategoryId = table.Column<int>(type: "INTEGER", nullable: false)
+                    TaskId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    CategoryName = table.Column<string>(type: "TEXT", nullable: false),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false)
+                    TaskDescription = table.Column<string>(type: "TEXT", nullable: false),
+                    TaskDate = table.Column<string>(type: "TEXT", nullable: false),
+                    TaskStart = table.Column<TimeOnly>(type: "TEXT", nullable: false),
+                    TaskEnd = table.Column<TimeOnly>(type: "TEXT", nullable: false),
+                    Matricule = table.Column<string>(type: "TEXT", nullable: false),
+                    Discriminator = table.Column<string>(type: "TEXT", nullable: false),
+                    Matiere = table.Column<string>(type: "TEXT", nullable: true),
+                    Prof = table.Column<string>(type: "TEXT", nullable: true),
+                    Parcours = table.Column<string>(type: "TEXT", nullable: true),
+                    Niveau = table.Column<string>(type: "TEXT", nullable: true),
+                    Salle = table.Column<string>(type: "TEXT", nullable: true),
+                    Groupe = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserInterestCategories", x => x.CategoryId);
+                    table.PrimaryKey("PK_AgendaTasks", x => x.TaskId);
                     table.ForeignKey(
-                        name: "FK_UserInterestCategories_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_AgendaTasks_Users_Matricule",
+                        column: x => x.Matricule,
+                        principalTable: "Users",
+                        principalColumn: "Matricule",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserInterestCategories",
+                columns: table => new
+                {
+                    UCategoryId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CategoryId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CategoryName = table.Column<string>(type: "TEXT", nullable: false),
+                    Matricule = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserInterestCategories", x => x.UCategoryId);
+                    table.ForeignKey(
+                        name: "FK_UserInterestCategories_Users_Matricule",
+                        column: x => x.Matricule,
                         principalTable: "Users",
                         principalColumn: "Matricule",
                         onDelete: ReferentialAction.Cascade);
@@ -132,17 +163,18 @@ namespace Devhunt_2024_back.Migrations
                 name: "UserInterests",
                 columns: table => new
                 {
-                    InterestId = table.Column<int>(type: "INTEGER", nullable: false)
+                    UInterestId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    InterestId = table.Column<int>(type: "INTEGER", nullable: false),
                     InterestName = table.Column<string>(type: "TEXT", nullable: false),
                     InterestDescription = table.Column<string>(type: "TEXT", nullable: false),
                     ImagePath = table.Column<string>(type: "TEXT", nullable: false),
                     CategoryId = table.Column<int>(type: "INTEGER", nullable: false),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false)
+                    Matricule = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserInterests", x => x.InterestId);
+                    table.PrimaryKey("PK_UserInterests", x => x.UInterestId);
                     table.ForeignKey(
                         name: "FK_UserInterests_InterestCategories_CategoryId",
                         column: x => x.CategoryId,
@@ -150,12 +182,17 @@ namespace Devhunt_2024_back.Migrations
                         principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserInterests_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_UserInterests_Users_Matricule",
+                        column: x => x.Matricule,
                         principalTable: "Users",
                         principalColumn: "Matricule",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AgendaTasks_Matricule",
+                table: "AgendaTasks",
+                column: "Matricule");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Interests_CategoryId",
@@ -163,9 +200,9 @@ namespace Devhunt_2024_back.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserInterestCategories_UserId",
+                name: "IX_UserInterestCategories_Matricule",
                 table: "UserInterestCategories",
-                column: "UserId");
+                column: "Matricule");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserInterests_CategoryId",
@@ -173,14 +210,17 @@ namespace Devhunt_2024_back.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserInterests_UserId",
+                name: "IX_UserInterests_Matricule",
                 table: "UserInterests",
-                column: "UserId");
+                column: "Matricule");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AgendaTasks");
+
             migrationBuilder.DropTable(
                 name: "Interests");
 

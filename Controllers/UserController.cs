@@ -40,7 +40,18 @@ public class UserController : ControllerBase
         try
         {
             await _userRepository.CreateUser(newUser);
-            return Ok(new { message = "Created" });
+            
+            
+            var jwt = _jwtService.Generator(matricule, newUser.Role);
+            Response.Cookies.Append("jwt", jwt, new CookieOptions
+            {
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Secure = true
+            });
+
+            return Ok(jwt);            
+            
         }
         catch (Exception e)
         {
@@ -178,5 +189,36 @@ public class UserController : ControllerBase
         var matricule = token.Issuer;
         var intCatList = await _interestRepository.GetUserInterestCategory(matricule);
         return Ok(intCatList);
+    }
+    
+    
+    
+    [HttpPost("Auth/Login/Admin")]
+    public IActionResult LoginAdmin(string matricule, string password)
+    {
+        try
+        {
+            var user = _userRepository.GetAdminById(matricule);
+
+            if (user.Matricule != matricule)
+                return BadRequest("Mot de passe ou matricule invalide");
+            if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
+                return BadRequest("Mot de passe ou matricule invalide");
+
+            var jwt = _jwtService.Generator(user.Matricule, user.Role);
+            Response.Cookies.Append("jwt", jwt, new CookieOptions
+            {
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Secure = true
+            });
+
+            return Ok(jwt);
+
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
     }
 }

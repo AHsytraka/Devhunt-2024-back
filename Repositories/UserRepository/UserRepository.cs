@@ -40,4 +40,10 @@ public class UserRepository : IUserRepository
             .Where(u => matricules.Contains(u.Matricule))
             .ToListAsync();
     }
+
+    public Admin GetAdminById(string matricule)
+    {
+        var admin = _appDbContext.Admins.FirstOrDefault(a => a.Matricule == matricule);
+        return admin;
+    }
 }

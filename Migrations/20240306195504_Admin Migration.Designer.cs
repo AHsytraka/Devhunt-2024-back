@@ -11,14 +11,71 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Devhunt_2024_back.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240306155859_DB Migration")]
-    partial class DBMigration
+    [Migration("20240306195504_Admin Migration")]
+    partial class AdminMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.11");
+
+            modelBuilder.Entity("Devhunt_2024_back.Models.Admin", b =>
+                {
+                    b.Property<string>("Matricule")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Matricule");
+
+                    b.ToTable("Admins");
+                });
+
+            modelBuilder.Entity("Devhunt_2024_back.Models.AgendaTask", b =>
+                {
+                    b.Property<int>("TaskId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Matricule")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TaskDate")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TaskDescription")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<TimeOnly>("TaskEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<TimeOnly>("TaskStart")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("TaskId");
+
+                    b.HasIndex("Matricule");
+
+                    b.ToTable("AgendaTasks");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("AgendaTask");
+
+                    b.UseTphMappingStrategy();
+                });
 
             modelBuilder.Entity("Devhunt_2024_back.Models.FileUpload.Post", b =>
                 {
@@ -173,7 +230,7 @@ namespace Devhunt_2024_back.Migrations
 
             modelBuilder.Entity("Devhunt_2024_back.Models.UserInterest", b =>
                 {
-                    b.Property<int>("InterestId")
+                    b.Property<int>("UInterestId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -188,42 +245,90 @@ namespace Devhunt_2024_back.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("InterestId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("InterestName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("Matricule")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("InterestId");
+                    b.HasKey("UInterestId");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("Matricule");
 
                     b.ToTable("UserInterests");
                 });
 
             modelBuilder.Entity("Devhunt_2024_back.Models.UserInterestCategory", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("UCategoryId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CategoryId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("Matricule")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("CategoryId");
+                    b.HasKey("UCategoryId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("Matricule");
 
                     b.ToTable("UserInterestCategories");
+                });
+
+            modelBuilder.Entity("Devhunt_2024_back.Models.Course", b =>
+                {
+                    b.HasBaseType("Devhunt_2024_back.Models.AgendaTask");
+
+                    b.Property<string>("Groupe")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Matiere")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Niveau")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Parcours")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Prof")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Salle")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasDiscriminator().HasValue("Course");
+                });
+
+            modelBuilder.Entity("Devhunt_2024_back.Models.AgendaTask", b =>
+                {
+                    b.HasOne("Devhunt_2024_back.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("Matricule")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Devhunt_2024_back.Models.Interest", b =>
@@ -246,8 +351,8 @@ namespace Devhunt_2024_back.Migrations
                         .IsRequired();
 
                     b.HasOne("Devhunt_2024_back.Models.User", "User")
-                        .WithMany("UserInterests")
-                        .HasForeignKey("UserId")
+                        .WithMany()
+                        .HasForeignKey("Matricule")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -259,19 +364,12 @@ namespace Devhunt_2024_back.Migrations
             modelBuilder.Entity("Devhunt_2024_back.Models.UserInterestCategory", b =>
                 {
                     b.HasOne("Devhunt_2024_back.Models.User", "User")
-                        .WithMany("UserInterestCategories")
-                        .HasForeignKey("UserId")
+                        .WithMany()
+                        .HasForeignKey("Matricule")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Devhunt_2024_back.Models.User", b =>
-                {
-                    b.Navigation("UserInterestCategories");
-
-                    b.Navigation("UserInterests");
                 });
 #pragma warning restore 612, 618
         }

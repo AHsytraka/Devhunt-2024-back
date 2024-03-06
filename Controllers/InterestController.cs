@@ -4,6 +4,7 @@ using Devhunt_2024_back.Models;
 using Devhunt_2024_back.Models.FileUpload;
 using Devhunt_2024_back.Repositories.FileRepository;
 using Devhunt_2024_back.Repositories.InterestRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +26,7 @@ public class InterestController : ControllerBase
     }
     
     [HttpPost("AddInterestCategory")]
+    [Authorize(Roles = "Admin")]
     public IActionResult AddInterestCategory(string categoryName)
     {
         var interestCategory = new InterestCategory
@@ -36,6 +38,7 @@ public class InterestController : ControllerBase
     }
 
     [HttpGet("GetInterestCategories")]
+    [Authorize(Roles = "User,Admin")]
     public IActionResult GetInterestCategories()
     {
         var intCatList = _interestRepository.GetInterestCats();
@@ -43,6 +46,7 @@ public class InterestController : ControllerBase
     }
     
     [HttpPost("AddInterest")]
+    [Authorize(Roles = "Admin")]
     [RequestSizeLimit(25 * 1024 * 1024)] //file size
     public async Task<IActionResult> AddInterest(string interestName, string interestDescription, int categoryId, [FromForm]PostRequest postRequest)
     {
@@ -77,6 +81,7 @@ public class InterestController : ControllerBase
     
 
     [HttpGet("GetInterests")]
+    [Authorize(Roles = "User,Admin")]
     public async Task<IActionResult> GetInterests()
     {
         var interList = await _interestRepository.GetInterests();
@@ -84,6 +89,7 @@ public class InterestController : ControllerBase
     }
     
     [HttpGet("GetInterestsByCategoryId")]
+    [Authorize(Roles = "User,Admin")]
     public async Task<IActionResult> GetInterestsByCatId(int catId)
     {
         var interList = await _interestRepository.GetInterestByCategoryId(catId);
@@ -94,6 +100,7 @@ public class InterestController : ControllerBase
     
     //<img src="/api/images/example.jpg" alt="Image">
     [HttpGet("{filename}")]
+    [Authorize(Roles = "User,Admin")]
     public IActionResult GetInterestImage(string filename)
     {
         var imagePath = Path.Combine(_environment.WebRootPath, "interests", "image", filename);
