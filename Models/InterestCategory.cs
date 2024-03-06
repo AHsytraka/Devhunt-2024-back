@@ -8,3 +8,10 @@ public class InterestCategory
     public int CategoryId { get; set; }
     public required string CategoryName { get; set; }
 }
+
+public class UserInterestCategory
+{
+    [Key]
+    public int CategoryId { get; set; }
+    public required string CategoryName { get; set; }
+}

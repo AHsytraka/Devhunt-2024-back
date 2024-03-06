@@ -22,7 +22,7 @@ public class UserRepository : IUserRepository
     public User GetUserByMatricule(string matricule)
     {
         var user = _appDbContext.Users.FirstOrDefault(u => u.Matricule == matricule);
-        return user ?? throw new NullReferenceException();
+        return user ?? throw new NullReferenceException("User not found");
     }
 
 }

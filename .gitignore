@@ -44,6 +44,9 @@ Generated\ Files/
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
+# Ignore users directory
+/wwwroot/*
+
 # NUnit
 *.VisualState.xml
 TestResult.xml

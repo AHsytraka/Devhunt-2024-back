@@ -27,7 +27,7 @@
 
   <ItemGroup>
     <Folder Include="Database\" />
-    <Folder Include="Repositories\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

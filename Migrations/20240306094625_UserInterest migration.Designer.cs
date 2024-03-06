@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Devhunt_2024_back.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240306085554_Interest Migration")]
-    partial class InterestMigration
+    [Migration("20240306094625_UserInterest migration")]
+    partial class UserInterestmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,14 +32,9 @@ namespace Devhunt_2024_back.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserMatricule")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("InterestId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("UserMatricule");
 
                     b.ToTable("Interests");
                 });
@@ -102,6 +97,51 @@ namespace Devhunt_2024_back.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Devhunt_2024_back.Models.UserInterest", b =>
+                {
+                    b.Property<int>("InterestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("InterestName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserMatricule")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("InterestId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserMatricule");
+
+                    b.ToTable("UserInterest");
+                });
+
+            modelBuilder.Entity("Devhunt_2024_back.Models.UserInterestCategory", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserMatricule")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryId");
+
+                    b.HasIndex("UserMatricule");
+
+                    b.ToTable("UserInterestCategory");
+                });
+
             modelBuilder.Entity("Devhunt_2024_back.Models.Interest", b =>
                 {
                     b.HasOne("Devhunt_2024_back.Models.InterestCategory", "InterestCategor")
@@ -110,16 +150,36 @@ namespace Devhunt_2024_back.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("InterestCategor");
+                });
+
+            modelBuilder.Entity("Devhunt_2024_back.Models.UserInterest", b =>
+                {
+                    b.HasOne("Devhunt_2024_back.Models.InterestCategory", "InterestCategory")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Devhunt_2024_back.Models.User", null)
-                        .WithMany("Interests")
+                        .WithMany("InterestList")
                         .HasForeignKey("UserMatricule");
 
-                    b.Navigation("InterestCategor");
+                    b.Navigation("InterestCategory");
+                });
+
+            modelBuilder.Entity("Devhunt_2024_back.Models.UserInterestCategory", b =>
+                {
+                    b.HasOne("Devhunt_2024_back.Models.User", null)
+                        .WithMany("InterestCategories")
+                        .HasForeignKey("UserMatricule");
                 });
 
             modelBuilder.Entity("Devhunt_2024_back.Models.User", b =>
                 {
-                    b.Navigation("Interests");
+                    b.Navigation("InterestCategories");
+
+                    b.Navigation("InterestList");
                 });
 #pragma warning restore 612, 618
         }

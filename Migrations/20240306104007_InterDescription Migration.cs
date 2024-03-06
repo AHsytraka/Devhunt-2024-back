@@ -5,23 +5,22 @@
 namespace Devhunt_2024_back.Migrations
 {
     /// <inheritdoc />
-    public partial class Userupdate : Migration
+    public partial class InterDescriptionMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Facebook",
-                table: "Users",
+                name: "InterestDescription",
+                table: "UserInterest",
                 type: "TEXT",
                 nullable: false,
                 defaultValue: "");
 
             migrationBuilder.AddColumn<string>(
-                name: "Parcour",
-                table: "Users",
+                name: "InterestDescription",
+                table: "Interests",
                 type: "TEXT",
-                maxLength: 5,
                 nullable: false,
                 defaultValue: "");
         }
@@ -30,12 +29,12 @@ namespace Devhunt_2024_back.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Facebook",
-                table: "Users");
+                name: "InterestDescription",
+                table: "UserInterest");
 
             migrationBuilder.DropColumn(
-                name: "Parcour",
-                table: "Users");
+                name: "InterestDescription",
+                table: "Interests");
         }
     }
 }
