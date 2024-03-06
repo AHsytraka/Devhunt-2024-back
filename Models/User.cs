@@ -17,12 +17,16 @@ public class User
     [MinLength(2)]
     public required string Prenom { get; set; }
     
-    [StringLength(2)]
+    [MaxLength(2)]
     public required string Niveau { get; set; }
     
-    [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
-    public required string Role { get; set; }
+    [MaxLength(5)]
+    public required string Parcour { get; set; }
     
-    [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
-    public required string Password { get; set; }
+    public required string Facebook { get; set; }
+    
+    [JsonIgnore]
+    public string Role { get; set; }
+    [JsonIgnore]
+    public string Password { get; set; }
 }
