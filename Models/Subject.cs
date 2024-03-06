@@ -8,5 +8,5 @@ public class Subject
     public int SubjectId { get; set; }
     public required string Libelle { get; set; }
     public required string Description { get; set; }
-    public List<Professor> Professors { get; set; }
+    public required string Professors { get; set; }
 }

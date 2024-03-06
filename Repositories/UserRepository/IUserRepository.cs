@@ -6,4 +6,5 @@ public interface IUserRepository
 {
     Task<User> CreateUser(User user);
     User GetUserByMatricule(string matricule);
+    Task<List<User>> GetUsersByInterest(int interestId);
 }

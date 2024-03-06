@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Devhunt_2024_back.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240306120719_File Migration")]
-    partial class FileMigration
+    [Migration("20240306160623_List Removale")]
+    partial class ListRemovale
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,6 +85,50 @@ namespace Devhunt_2024_back.Migrations
                     b.ToTable("InterestCategories");
                 });
 
+            modelBuilder.Entity("Devhunt_2024_back.Models.Professor", b =>
+                {
+                    b.Property<string>("Matricule")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nom")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Prenom")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Titre")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Matricule");
+
+                    b.ToTable("Professors");
+                });
+
+            modelBuilder.Entity("Devhunt_2024_back.Models.Subject", b =>
+                {
+                    b.Property<int>("SubjectId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Libelle")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Professors")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("SubjectId");
+
+                    b.ToTable("Subjects");
+                });
+
             modelBuilder.Entity("Devhunt_2024_back.Models.User", b =>
                 {
                     b.Property<string>("Matricule")
@@ -115,7 +159,6 @@ namespace Devhunt_2024_back.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Prenom")
-                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("TEXT");
 
@@ -149,16 +192,17 @@ namespace Devhunt_2024_back.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserMatricule")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("InterestId");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("UserMatricule");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("UserInterest");
+                    b.ToTable("UserInterests");
                 });
 
             modelBuilder.Entity("Devhunt_2024_back.Models.UserInterestCategory", b =>
@@ -171,25 +215,26 @@ namespace Devhunt_2024_back.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserMatricule")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("CategoryId");
 
-                    b.HasIndex("UserMatricule");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("UserInterestCategory");
+                    b.ToTable("UserInterestCategories");
                 });
 
             modelBuilder.Entity("Devhunt_2024_back.Models.Interest", b =>
                 {
-                    b.HasOne("Devhunt_2024_back.Models.InterestCategory", "InterestCategor")
+                    b.HasOne("Devhunt_2024_back.Models.InterestCategory", "InterestCategory")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("InterestCategor");
+                    b.Navigation("InterestCategory");
                 });
 
             modelBuilder.Entity("Devhunt_2024_back.Models.UserInterest", b =>
@@ -200,25 +245,26 @@ namespace Devhunt_2024_back.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Devhunt_2024_back.Models.User", null)
-                        .WithMany("InterestList")
-                        .HasForeignKey("UserMatricule");
+                    b.HasOne("Devhunt_2024_back.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("InterestCategory");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Devhunt_2024_back.Models.UserInterestCategory", b =>
                 {
-                    b.HasOne("Devhunt_2024_back.Models.User", null)
-                        .WithMany("InterestCategories")
-                        .HasForeignKey("UserMatricule");
-                });
+                    b.HasOne("Devhunt_2024_back.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("Devhunt_2024_back.Models.User", b =>
-                {
-                    b.Navigation("InterestCategories");
-
-                    b.Navigation("InterestList");
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

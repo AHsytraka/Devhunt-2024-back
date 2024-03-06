@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using Devhunt_2024_back.Helpers;
 using Devhunt_2024_back.Models;
 using Devhunt_2024_back.Models.FileUpload;
 using Devhunt_2024_back.Repositories.FileRepository;
@@ -63,7 +64,6 @@ public class InterestController : ControllerBase
         }
 
         var postResponse = _postRepository.CreatePostAsync(postRequest);
-        
         var interest = new Interest {
             InterestName = interestName,
             InterestDescription = interestDescription,

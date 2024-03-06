@@ -15,7 +15,6 @@ public class Interest
     public required string InterestDescription { get; set; }
     
     public string ImagePath { get; set; }
-    
     public int CategoryId { get; set; }
     
     [ForeignKey(("CategoryId"))]
@@ -26,6 +25,7 @@ public class Interest
 public class UserInterest
 {
     [Key]
+    public int UInterestId { get; set; }
     public int  InterestId { get; set; }
     
     // ReSharper disable once EntityFramework.ModelValidation.UnlimitedStringLength
@@ -36,6 +36,12 @@ public class UserInterest
     public string ImagePath { get; set; }
     
     public int CategoryId { get; set; }
+    
+    public string Matricule { get; set; } 
+
+    [ForeignKey("Matricule")]
+    [JsonIgnore]
+    public User User { get; set; }
     
     [ForeignKey(("CategoryId"))]
     [JsonIgnore]

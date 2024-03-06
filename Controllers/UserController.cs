@@ -103,6 +103,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("Interest/AddInterest")]
+    [Authorize(Roles = "User")]
     public async Task<IActionResult> AddInterest(int interestId)
     {
         var jwt = Request.Cookies["jwt"];
@@ -120,6 +121,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("Interest/AddCategory")]
+    [Authorize(Roles = "User")]
     public async Task<IActionResult> AddCategory(int catId)
     {
         var jwt = Request.Cookies["jwt"];
@@ -134,5 +136,47 @@ public class UserController : ControllerBase
 
         await _interestRepository.AddInterestCategoryToUser(matricule, catId);
         return Ok();
+    }
+    
+    [HttpGet("GetUsersByInterest")]
+    
+    public async Task<IActionResult> GetUsersByInterest(int interestId)
+    {
+        var userList = await _userRepository.GetUsersByInterest(interestId);
+        return Ok(userList);
+    }
+    
+    [HttpGet("Interest/GetUserInterest")]
+    
+    public async Task<IActionResult> GetUserInterest()
+    {
+        var jwt = Request.Cookies["jwt"];
+        
+        // Parse the issuer from the JWT as an integer
+        var token = _jwtService.Checker(jwt);
+        if (token == null)
+        {
+            return Unauthorized(new { message = "Invalid token" });
+        }
+        var matricule = token.Issuer;
+        
+        var intList = await _interestRepository.GetUserInterest(matricule);
+        return Ok(intList);
+    }
+    
+    [HttpGet("Interest/GetUserInterestCategory")]
+    public async Task<IActionResult> GetUserInterestCategory()
+    {
+        var jwt = Request.Cookies["jwt"];
+        
+        // Parse the issuer from the JWT as an integer
+        var token = _jwtService.Checker(jwt);
+        if (token == null)
+        {
+            return Unauthorized(new { message = "Invalid token" });
+        }
+        var matricule = token.Issuer;
+        var intCatList = await _interestRepository.GetUserInterestCategory(matricule);
+        return Ok(intCatList);
     }
 }

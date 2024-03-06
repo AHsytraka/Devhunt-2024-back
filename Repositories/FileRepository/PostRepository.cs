@@ -17,6 +17,7 @@ public class PostRepository : IPostRepository
 
     public async Task<PostResponse> CreatePostAsync(PostRequest postRequest)
     {
+        var uniqueFileName = FileHelper.GetUniqueFileName(postRequest.File.FileName);
         var post = new Post
         {
             InterestName = postRequest.InterestName,
@@ -42,10 +43,8 @@ public class PostRepository : IPostRepository
             Ts = postEntity.Ts,
             ImagePath = Path.Combine(postEntity.Imagepath),
         };
-
-
+        
         return new PostResponse { Success = true, Post = postModel };
-
     }
 
     public async Task SavePostFileAsync(PostRequest postRequest)

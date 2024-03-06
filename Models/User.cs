@@ -25,10 +25,6 @@ public class User
     
     public required string Facebook { get; set; }
     
-    public List<UserInterestCategory> InterestCategories { get; set; }
-    
-    public List<UserInterest> InterestList { get; set; }
-    
     [JsonIgnore]
     public string Role { get; set; }
     [JsonIgnore]

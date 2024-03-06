@@ -3,6 +3,8 @@ using System.Text;
 using Devhunt_2024_back.Data;
 using Devhunt_2024_back.Repositories.FileRepository;
 using Devhunt_2024_back.Repositories.InterestRepository;
+using Devhunt_2024_back.Repositories.ProfRepository;
+using Devhunt_2024_back.Repositories.SubjectRepository;
 using Devhunt_2024_back.Repositories.UserRepository;
 using Devhunt_2024_back.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -22,6 +24,8 @@ builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IInterestRepository, InterestRepository>();
 builder.Services.AddTransient<IPostRepository, PostRepository>();
+builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+builder.Services.AddScoped<IProfRepository, ProfRepository>();
 
 //DBContext
 builder.Services.AddDbContext<AppDbContext>(options =>

@@ -29,7 +29,9 @@ public class InterestRepository:IInterestRepository
 
     public InterestCategory GetCategoryById(int catId)
     {
-        return _appDbContext.InterestCategories.FirstOrDefault(c => c.CategoryId == catId);
+        return _appDbContext.InterestCategories
+            .Where(c => c.CategoryId == catId)
+            .FirstOrDefault();
     }
         
     //Interests
@@ -51,9 +53,9 @@ public class InterestRepository:IInterestRepository
         return await _appDbContext.Interests.Where(i => i.CategoryId == categoryId).ToListAsync();
     }
 
-    public Interest GetInterestById(int interestId)
+    public async Task<Interest> GetInterestById(int interestId)
     {
-        var inter = _appDbContext.Interests.FirstOrDefault(i => i.InterestId == interestId);
+        var inter = await _appDbContext.Interests.FirstOrDefaultAsync(i => i.InterestId == interestId);
 
         return inter;
     }
@@ -61,28 +63,19 @@ public class InterestRepository:IInterestRepository
     //Add to user
     public async Task AddInterestToUser(string userMatricule, int interestId)
     {
-        // Retrieve the user from the database
-        var user = await _appDbContext.Users
-            .Include(u => u.InterestList)
-            .FirstOrDefaultAsync(u => u.Matricule == userMatricule);
+        var inter = await GetInterestById(interestId);
 
-        if (user == null)
-        {
-            throw new NullReferenceException("User not found");
-        }
-
-        var inter = GetInterestById(interestId);
         // Add the new interest to the user's list
-        
         var interest = new UserInterest
         {
             InterestId = inter.InterestId,
             InterestDescription = inter.InterestDescription,
             ImagePath = inter.ImagePath,
             CategoryId = inter.CategoryId,
+            Matricule = userMatricule,
             InterestName = inter.InterestName
         };
-        user.InterestList.Add(interest);
+        _appDbContext.UserInterests.Add(interest);
 
         // Save the changes to the database
         await _appDbContext.SaveChangesAsync();
@@ -90,26 +83,33 @@ public class InterestRepository:IInterestRepository
 
     public async Task AddInterestCategoryToUser(string userMatricule, int catId)
     {
-        // Retrieve the user from the database
-        var user = await _appDbContext.Users
-            .Include(u => u.InterestCategories)
-            .FirstOrDefaultAsync(u => u.Matricule == userMatricule);
-
-        if (user == null)
-        {
-            throw new NullReferenceException("User not found");
-        }
-
         var cat = GetCategoryById(catId);
         var uCategory = new UserInterestCategory
         {
             CategoryId = cat.CategoryId,
-            CategoryName = cat.CategoryName
+            CategoryName = cat.CategoryName,
+            Matricule = userMatricule
         };
         // Add the new interest category to the user's list
-        user.InterestCategories.Add(uCategory);
+        _appDbContext.UserInterestCategories.Add(uCategory);
 
         // Save the changes to the database
-        await _appDbContext.SaveChangesAsync();
+        _appDbContext.SaveChanges();
+    }
+
+    public async Task<List<UserInterest>> GetUserInterest(string matricule)
+    {
+        var userInterest = await _appDbContext.UserInterests
+            .Where(u => u.Matricule == matricule)
+            .ToListAsync();
+        return userInterest;
+    }
+
+    public async Task<List<UserInterestCategory>> GetUserInterestCategory(string matricule)
+    {
+        var userIntCat = await _appDbContext.UserInterestCategories
+            .Where(u => u.Matricule == matricule)
+            .ToListAsync();
+        return userIntCat;
     }
 }

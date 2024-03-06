@@ -8,5 +8,5 @@ public class Professor
     public required string Matricule { get; set; }
     public required string Nom { get; set; }
     public string? Prenom { get; set; }
-    public List<string> Titre { get; set; }
+    public string Titre { get; set; }
 }
