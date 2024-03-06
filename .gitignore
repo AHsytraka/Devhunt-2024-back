@@ -46,6 +46,7 @@ Generated\ Files/
 
 # Ignore users directory
 /wwwroot/*
+!/wwwroot/
 
 # NUnit
 *.VisualState.xml
