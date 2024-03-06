@@ -103,7 +103,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("Interest/AddInterest")]
-    public async Task<IActionResult> AddInterest([FromForm]UserInterest userInterest)
+    public async Task<IActionResult> AddInterest(int interestId)
     {
         var jwt = Request.Cookies["jwt"];
         
@@ -115,12 +115,12 @@ public class UserController : ControllerBase
         }
         var matricule = token.Issuer;
 
-        await _interestRepository.AddInterestToUser(matricule, userInterest);
+        await _interestRepository.AddInterestToUser(matricule, interestId);
         return Ok();
     }
 
     [HttpPost("Interest/AddCategory")]
-    public async Task<IActionResult> AddCategory([FromForm]UserInterestCategory userInterestCategory)
+    public async Task<IActionResult> AddCategory(int catId)
     {
         var jwt = Request.Cookies["jwt"];
         
@@ -132,7 +132,7 @@ public class UserController : ControllerBase
         }
         var matricule = token.Issuer;
 
-        await _interestRepository.AddInterestCategoryToUser(matricule, userInterestCategory);
+        await _interestRepository.AddInterestCategoryToUser(matricule, catId);
         return Ok();
     }
 }

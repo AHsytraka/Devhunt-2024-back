@@ -20,7 +20,7 @@ public class Interest
     
     [ForeignKey(("CategoryId"))]
     [JsonIgnore]
-    public InterestCategory? InterestCategor { get; set; }
+    public InterestCategory? InterestCategory { get; set; }
 }
 
 public class UserInterest

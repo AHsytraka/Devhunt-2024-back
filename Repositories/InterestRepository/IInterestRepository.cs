@@ -11,8 +11,10 @@ public interface IInterestRepository
    //Interest
    Task<Interest> AddInterest(Interest interest);
    Task<List<Interest>> GetInterests();
+   public Task<List<Interest>> GetInterestByCategoryId(int categoryId);
+
    
    //add to user
-   public Task AddInterestToUser(string userMatricule, UserInterest userInterest);
-   public Task AddInterestCategoryToUser(string userMatricule, UserInterestCategory userInterestCategory);
+   public Task AddInterestToUser(string userMatricule, int interestId);
+   public Task AddInterestCategoryToUser(string userMatricule, int catId);
 }

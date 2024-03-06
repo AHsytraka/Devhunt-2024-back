@@ -4,7 +4,7 @@ namespace Devhunt_2024_back.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class MatiereController : ControllerBase
+public class SubjectController : ControllerBase
 {
     
 }

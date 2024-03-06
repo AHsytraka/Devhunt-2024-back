@@ -15,7 +15,7 @@ public class User
     
     [MaxLength(250)]
     [MinLength(2)]
-    public required string Prenom { get; set; }
+    public string? Prenom { get; set; }
     
     [MaxLength(2)]
     public required string Niveau { get; set; }

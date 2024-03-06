@@ -83,6 +83,14 @@ public class InterestController : ControllerBase
         return Ok(interList);
     }
     
+    [HttpGet("GetInterestsByCategoryId")]
+    public async Task<IActionResult> GetInterestsByCatId(int catId)
+    {
+        var interList = await _interestRepository.GetInterestByCategoryId(catId);
+        return Ok(interList);
+    }
+    
+    
     
     //<img src="/api/images/example.jpg" alt="Image">
     [HttpGet("{filename}")]
