@@ -23,5 +23,6 @@ public class User
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     public required string Role { get; set; }
     
+    [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     public required string Password { get; set; }
 }
