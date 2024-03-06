@@ -21,9 +21,11 @@ public class User
     public required string Niveau { get; set; }
     
     [MaxLength(5)]
-    public required string Parcour { get; set; }
+    public required string Parcours { get; set; }
     
     public required string Facebook { get; set; }
+    
+    public List<Interest> Interests { get; set; }
     
     [JsonIgnore]
     public string Role { get; set; }

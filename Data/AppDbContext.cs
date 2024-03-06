@@ -10,5 +10,6 @@ public class AppDbContext:DbContext
         
     }
     public DbSet<User> Users { get; set; }
-
+    public DbSet<Interest> Interests { get; set; }
+    public DbSet<InterestCategory> InterestCategories { get; set; }
 }

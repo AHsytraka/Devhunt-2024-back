@@ -20,7 +20,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("Auth/Register")]
-    public async Task<IActionResult> Register(string matricule, string nom, string prenom, string niveau,string parcour, string facebook,string password)
+    public async Task<IActionResult> Register(string matricule, string nom, string prenom, string niveau,string parcours, string facebook,string password)
     {
         User newUser = new()
         {
@@ -28,7 +28,7 @@ public class UserController : ControllerBase
             Nom = nom,
             Prenom = prenom,
             Niveau = niveau,
-            Parcour = parcour,
+            Parcours = parcours,
             Facebook = facebook,
             Role = "User",
             Password = BCrypt.Net.BCrypt.HashPassword(password),
