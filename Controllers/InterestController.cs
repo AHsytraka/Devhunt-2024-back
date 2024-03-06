@@ -14,9 +14,11 @@ public class InterestController : ControllerBase
 {
     private readonly IInterestRepository _interestRepository;
     private readonly IPostRepository _postRepository;
+    private readonly IWebHostEnvironment _environment;
 
-    public InterestController(IInterestRepository interestRepository, IPostRepository postRepository)
+    public InterestController(IInterestRepository interestRepository, IPostRepository postRepository, IWebHostEnvironment environment)
     {
+        _environment = environment;
         _interestRepository = interestRepository;
         _postRepository = postRepository;
     }
@@ -41,7 +43,7 @@ public class InterestController : ControllerBase
     
     [HttpPost("AddInterest")]
     [RequestSizeLimit(25 * 1024 * 1024)] //file size
-    public IActionResult AddInterest(string interestName, string interestDescription, int categoryId, [FromForm]PostRequest postRequest)
+    public async Task<IActionResult> AddInterest(string interestName, string interestDescription, int categoryId, [FromForm]PostRequest postRequest)
     {
         //Save image
         if (postRequest == null)
@@ -69,15 +71,43 @@ public class InterestController : ControllerBase
             ImagePath = postResponse.Result.Post.ImagePath
         };
         
-        var inter = _interestRepository.AddInterest(interest);
+        var inter = await _interestRepository.AddInterest(interest);
         return Ok(new {message = "Added interest : "+ inter});
     }
     
 
     [HttpGet("GetInterests")]
-    public IActionResult GetInterests()
+    public async Task<IActionResult> GetInterests()
     {
-        var interList = _interestRepository.GetInterests();
+        var interList = await _interestRepository.GetInterests();
         return Ok(interList);
+    }
+    
+    
+    //<img src="/api/images/example.jpg" alt="Image">
+    [HttpGet("{filename}")]
+    public IActionResult GetInterestImage(string filename)
+    {
+        var imagePath = Path.Combine(_environment.WebRootPath, "interests", "image", filename);
+        var image = System.IO.File.OpenRead(imagePath);
+        return File(image, GetContentType(filename));
+    }
+    
+    private string GetContentType(string filename)
+    {
+        var extension = Path.GetExtension(filename).ToLowerInvariant();
+
+        switch (extension)
+        {
+            case ".jpg":
+            case ".jpeg":
+                return "image/jpeg";
+            case ".png":
+                return "image/png";
+            case ".svg":
+                return "image/svg";
+            default:
+                throw new NotSupportedException($"File extension '{extension}' is not supported.");
+        }
     }
 }

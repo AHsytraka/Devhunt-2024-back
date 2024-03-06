@@ -62,7 +62,7 @@ public class PostRepository : IPostRepository
             throw new ArgumentNullException(nameof(uniqueFileName));
         }
 
-        var uploads = Path.Combine(_environment.WebRootPath, "interests", "image", postRequest.InterestName);
+        var uploads = Path.Combine(_environment.WebRootPath, "interests", "image");
 
         var filePath = Path.Combine(uploads, uniqueFileName);
 
