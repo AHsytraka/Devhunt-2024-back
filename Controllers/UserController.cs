@@ -4,6 +4,7 @@ using Devhunt_2024_back.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Devhunt_2024_back.Repositories.UserRepository;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Devhunt_2024_back.Controllers;
 
@@ -214,11 +215,23 @@ public class UserController : ControllerBase
             });
 
             return Ok(jwt);
-
         }
         catch (Exception e)
         {
             return BadRequest(e);
         }
+    }
+
+    [HttpPost("AddAmin")]
+    public IActionResult AddAdmin(Admin admin)
+    {
+        var adm = new Admin
+        {
+            Matricule = admin.Matricule,
+            Role = admin.Role,
+            Password = BCrypt.Net.BCrypt.HashPassword(admin.Password)
+        };
+        var admin1 = _userRepository.AddAdmin(adm);
+        return Ok(admin1);
     }
 }

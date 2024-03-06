@@ -41,6 +41,13 @@ public class UserRepository : IUserRepository
             .ToListAsync();
     }
 
+    public Admin AddAdmin(Admin admin)
+    {
+        _appDbContext.Admins.Add(admin);
+        _appDbContext.SaveChanges();
+        return admin;
+    }
+
     public Admin GetAdminById(string matricule)
     {
         var admin = _appDbContext.Admins.FirstOrDefault(a => a.Matricule == matricule);

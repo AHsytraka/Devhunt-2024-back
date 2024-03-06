@@ -7,6 +7,6 @@ public interface IUserRepository
     Task<User> CreateUser(User user);
     User GetUserByMatricule(string matricule);
     Task<List<User>> GetUsersByInterest(int interestId);
-    
+    Admin AddAdmin(Admin admin);
     Admin GetAdminById(string matricule);
 }
