@@ -29,12 +29,19 @@ public class InterestController : ControllerBase
     [Authorize(Roles = "Admin")]
     public IActionResult AddInterestCategory(string categoryName)
     {
-        var interestCategory = new InterestCategory
+        try
         {
-            CategoryName = categoryName
-        };
-        var intCat = _interestRepository.AddInterestCat(interestCategory);
-        return Ok(new { message = "Added category : "+ intCat.Result});
+            var interestCategory = new InterestCategory
+            {
+                CategoryName = categoryName
+            };
+            var intCat = _interestRepository.AddInterestCat(interestCategory);
+            return Ok(new { message = "Added category : "+ intCat.Result});
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
     }
 
     [HttpGet("GetInterestCategories")]
@@ -51,33 +58,40 @@ public class InterestController : ControllerBase
     public async Task<IActionResult> AddInterest(string interestName, string interestDescription,string website, int categoryId, [FromForm]PostRequest postRequest)
     {
         //Save image
-        if (postRequest == null)
+        try
         {
-            return BadRequest(new PostResponse { Success = false, ErrorCode = "S01", Error = "Invalid post request" });
-        }
+            if (postRequest == null)
+            {
+                return BadRequest(new PostResponse { Success = false, ErrorCode = "S01", Error = "Invalid post request" });
+            }
 
-        if (string.IsNullOrEmpty(Request.GetMultipartBoundary()))
-        {
-            return BadRequest(new PostResponse { Success = false, ErrorCode = "S02", Error = "Invalid post header" });
-        }
+            if (string.IsNullOrEmpty(Request.GetMultipartBoundary()))
+            {
+                return BadRequest(new PostResponse { Success = false, ErrorCode = "S02", Error = "Invalid post header" });
+            }
 
 
-        if (postRequest.File != null)
-        {
-            _postRepository.SavePostFileAsync(postRequest);
-        }
+            if (postRequest.File != null)
+            {
+                _postRepository.SavePostFileAsync(postRequest);
+            }
 
-        var postResponse = _postRepository.CreatePostAsync(postRequest);
-        var interest = new Interest {
-            InterestName = interestName,
-            InterestDescription = interestDescription,
-            CategoryId = categoryId,
-            ImagePath = postResponse.Result.Post.ImagePath,
-            WebSite = website
-        };
+            var postResponse = _postRepository.CreatePostAsync(postRequest);
+            var interest = new Interest {
+                InterestName = interestName,
+                InterestDescription = interestDescription,
+                CategoryId = categoryId,
+                ImagePath = postResponse.Result.Post.ImagePath,
+                WebSite = website
+            };
         
-        var inter = await _interestRepository.AddInterest(interest);
-        return Ok(new {message = "Added interest : "+ inter});
+            var inter = await _interestRepository.AddInterest(interest);
+            return Ok(new {message = "Added interest : "+ inter});
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
     }
     
 

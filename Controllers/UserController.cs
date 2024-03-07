@@ -118,18 +118,25 @@ public class UserController : ControllerBase
     [Authorize(Roles = "User")]
     public async Task<IActionResult> AddInterest(int interestId)
     {
-        var jwt = Request.Cookies["jwt"];
-        
-        // Parse the issuer from the JWT as an integer
-        var token = _jwtService.Checker(jwt);
-        if (token == null)
+        try
         {
-            return Unauthorized(new { message = "Invalid token" });
-        }
-        var matricule = token.Issuer;
+            var jwt = Request.Cookies["jwt"];
+        
+            // Parse the issuer from the JWT as an integer
+            var token = _jwtService.Checker(jwt);
+            if (token == null)
+            {
+                return Unauthorized(new { message = "Invalid token" });
+            }
+            var matricule = token.Issuer;
 
-        await _interestRepository.AddInterestToUser(matricule, interestId);
-        return Ok();
+            await _interestRepository.AddInterestToUser(matricule, interestId);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpPost("Interest/AddCategory")]
@@ -191,7 +198,6 @@ public class UserController : ControllerBase
         var intCatList = await _interestRepository.GetUserInterestCategory(matricule);
         return Ok(intCatList);
     }
-    
     
     
     [HttpPost("Auth/Login/Admin")]
