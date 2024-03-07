@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Devhunt_2024_back.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240307013558_Agenda FK")]
-    partial class AgendaFK
+    [Migration("20240307022659_Interest Update")]
+    partial class InterestUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -161,6 +161,10 @@ namespace Devhunt_2024_back.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("WebSite")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("InterestId");
 
                     b.HasIndex("CategoryId");
@@ -294,6 +298,10 @@ namespace Devhunt_2024_back.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Matricule")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("WebSite")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

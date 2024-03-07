@@ -158,6 +158,10 @@ namespace Devhunt_2024_back.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("WebSite")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("InterestId");
 
                     b.HasIndex("CategoryId");
@@ -291,6 +295,10 @@ namespace Devhunt_2024_back.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Matricule")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("WebSite")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

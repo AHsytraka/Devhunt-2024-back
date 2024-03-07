@@ -48,7 +48,7 @@ public class InterestController : ControllerBase
     [HttpPost("AddInterest")]
     [Authorize(Roles = "Admin")]
     [RequestSizeLimit(25 * 1024 * 1024)] //file size
-    public async Task<IActionResult> AddInterest(string interestName, string interestDescription, int categoryId, [FromForm]PostRequest postRequest)
+    public async Task<IActionResult> AddInterest(string interestName, string interestDescription,string website, int categoryId, [FromForm]PostRequest postRequest)
     {
         //Save image
         if (postRequest == null)
@@ -72,7 +72,8 @@ public class InterestController : ControllerBase
             InterestName = interestName,
             InterestDescription = interestDescription,
             CategoryId = categoryId,
-            ImagePath = postResponse.Result.Post.ImagePath
+            ImagePath = postResponse.Result.Post.ImagePath,
+            WebSite = website
         };
         
         var inter = await _interestRepository.AddInterest(interest);

@@ -6,11 +6,46 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Devhunt_2024_back.Migrations
 {
     /// <inheritdoc />
-    public partial class DBMigration : Migration
+    public partial class InterestUpdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Admins",
+                columns: table => new
+                {
+                    Matricule = table.Column<string>(type: "TEXT", nullable: false),
+                    Role = table.Column<string>(type: "TEXT", nullable: false),
+                    Password = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Admins", x => x.Matricule);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Courses",
+                columns: table => new
+                {
+                    CourseId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TaskDescription = table.Column<string>(type: "TEXT", nullable: false),
+                    TaskDate = table.Column<string>(type: "TEXT", nullable: false),
+                    TaskStart = table.Column<TimeOnly>(type: "TEXT", nullable: false),
+                    TaskEnd = table.Column<TimeOnly>(type: "TEXT", nullable: false),
+                    Matiere = table.Column<string>(type: "TEXT", nullable: false),
+                    Prof = table.Column<string>(type: "TEXT", nullable: false),
+                    Parcours = table.Column<string>(type: "TEXT", nullable: false),
+                    Niveau = table.Column<string>(type: "TEXT", nullable: false),
+                    Salle = table.Column<string>(type: "TEXT", nullable: false),
+                    Groupe = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Courses", x => x.CourseId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "InterestCategories",
                 columns: table => new
@@ -94,6 +129,7 @@ namespace Devhunt_2024_back.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     InterestName = table.Column<string>(type: "TEXT", nullable: false),
                     InterestDescription = table.Column<string>(type: "TEXT", nullable: false),
+                    WebSite = table.Column<string>(type: "TEXT", nullable: false),
                     ImagePath = table.Column<string>(type: "TEXT", nullable: false),
                     CategoryId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -118,14 +154,7 @@ namespace Devhunt_2024_back.Migrations
                     TaskDate = table.Column<string>(type: "TEXT", nullable: false),
                     TaskStart = table.Column<TimeOnly>(type: "TEXT", nullable: false),
                     TaskEnd = table.Column<TimeOnly>(type: "TEXT", nullable: false),
-                    Matricule = table.Column<string>(type: "TEXT", nullable: false),
-                    Discriminator = table.Column<string>(type: "TEXT", nullable: false),
-                    Matiere = table.Column<string>(type: "TEXT", nullable: true),
-                    Prof = table.Column<string>(type: "TEXT", nullable: true),
-                    Parcours = table.Column<string>(type: "TEXT", nullable: true),
-                    Niveau = table.Column<string>(type: "TEXT", nullable: true),
-                    Salle = table.Column<string>(type: "TEXT", nullable: true),
-                    Groupe = table.Column<string>(type: "TEXT", nullable: true)
+                    Matricule = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -168,6 +197,7 @@ namespace Devhunt_2024_back.Migrations
                     InterestId = table.Column<int>(type: "INTEGER", nullable: false),
                     InterestName = table.Column<string>(type: "TEXT", nullable: false),
                     InterestDescription = table.Column<string>(type: "TEXT", nullable: false),
+                    WebSite = table.Column<string>(type: "TEXT", nullable: false),
                     ImagePath = table.Column<string>(type: "TEXT", nullable: false),
                     CategoryId = table.Column<int>(type: "INTEGER", nullable: false),
                     Matricule = table.Column<string>(type: "TEXT", nullable: false)
@@ -219,7 +249,13 @@ namespace Devhunt_2024_back.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Admins");
+
+            migrationBuilder.DropTable(
                 name: "AgendaTasks");
+
+            migrationBuilder.DropTable(
+                name: "Courses");
 
             migrationBuilder.DropTable(
                 name: "Interests");

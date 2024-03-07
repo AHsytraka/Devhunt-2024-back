@@ -14,6 +14,8 @@ public class Interest
     
     public required string InterestDescription { get; set; }
     
+    public required string WebSite { get; set; }
+    
     public string ImagePath { get; set; }
     public int CategoryId { get; set; }
     
@@ -32,6 +34,9 @@ public class UserInterest
     public required string InterestName { get; set; }
     
     public required string InterestDescription { get; set; }
+    
+    public required string WebSite { get; set; }
+
     
     public string ImagePath { get; set; }
     

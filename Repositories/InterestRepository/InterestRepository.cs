@@ -72,6 +72,7 @@ public class InterestRepository:IInterestRepository
             ImagePath = inter.ImagePath,
             CategoryId = inter.CategoryId,
             Matricule = userMatricule,
+            WebSite = inter.WebSite,
             InterestName = inter.InterestName
         };
         _appDbContext.UserInterests.Add(interest);

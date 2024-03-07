@@ -8,7 +8,6 @@ public class AppDbContext:DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
-        
     }
     public DbSet<Interest> Interests { get; set; }
     public DbSet<InterestCategory> InterestCategories { get; set; }
