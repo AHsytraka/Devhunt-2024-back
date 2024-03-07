@@ -16,14 +16,14 @@ public class AgendaRepository : IAgendaRepository
     public async Task<AgendaTask> AddTask(AgendaTask agendaTask)
     {
         await _appDbContext.AgendaTasks.AddAsync(agendaTask);
-        _appDbContext.SaveChangesAsync();
+        await _appDbContext.SaveChangesAsync();
         return agendaTask;
     }
 
     public async Task<Course> AddCourse(Course course)
     {
         await _appDbContext.Courses.AddAsync(course);
-        _appDbContext.SaveChangesAsync();
+        await _appDbContext.SaveChangesAsync();
         return course;
     }
 
@@ -50,7 +50,8 @@ public class AgendaRepository : IAgendaRepository
     }
 
     public async Task<List<Course>> GetCourses(string prem, string dern)
-    {       DateTime startDate, endDate;
+    {
+        DateTime startDate, endDate;
 
         if (!DateTime.TryParseExact(prem, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate))
         {
@@ -61,7 +62,7 @@ public class AgendaRepository : IAgendaRepository
         {
             throw new ArgumentException("Invalid end date format. Expected format is dd/MM/yyyy.");
         }
-        
+    
         var allCourse = await _appDbContext.Courses.ToListAsync();
 
         return allCourse

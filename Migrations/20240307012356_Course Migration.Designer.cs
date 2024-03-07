@@ -3,6 +3,7 @@ using System;
 using Devhunt_2024_back.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Devhunt_2024_back.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240307012356_Course Migration")]
+    partial class CourseMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.11");
@@ -80,6 +83,10 @@ namespace Devhunt_2024_back.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Matricule")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Niveau")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -111,6 +118,8 @@ namespace Devhunt_2024_back.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("CourseId");
+
+                    b.HasIndex("Matricule");
 
                     b.ToTable("Courses");
                 });
@@ -328,6 +337,17 @@ namespace Devhunt_2024_back.Migrations
                 });
 
             modelBuilder.Entity("Devhunt_2024_back.Models.AgendaTask", b =>
+                {
+                    b.HasOne("Devhunt_2024_back.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("Matricule")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Devhunt_2024_back.Models.Course", b =>
                 {
                     b.HasOne("Devhunt_2024_back.Models.User", "User")
                         .WithMany()

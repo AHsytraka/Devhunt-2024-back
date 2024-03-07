@@ -51,16 +51,6 @@ public class AgendaController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> AddCourse(string matiere,string description, DateOnly date, TimeOnly start, TimeOnly end, string prof, string parcours,string niveau, string salle, string groupe)
     {
-        var jwt = Request.Cookies["jwt"];
-        
-        // Parse the issuer from the JWT as an integer
-        var token = _jwtService.Checker(jwt);
-        if (token == null)
-        {
-            return Unauthorized(new { message = "Invalid token" });
-        }
-        var matricule = token.Issuer;
-        
         var course = new Course
         {
             Matiere = matiere,
@@ -73,7 +63,6 @@ public class AgendaController : ControllerBase
             Niveau = niveau,
             Salle = salle,
             Groupe = groupe,
-            Matricule = matricule
         };
 
         var aCourse = await _agendaRepository.AddCourse(course);
